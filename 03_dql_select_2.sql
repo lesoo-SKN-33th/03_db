@@ -111,3 +111,76 @@ select a.emp_id
 from employee a right outer join department b
 on a.dept_code = b.dept_id
 order by a.emp_id asc;
+
+##  menudb
+# cross join(카테시안곱, 곱집함)
+# join 되는 두 테이블의 모든 경우의 수 처리
+select count(*) from tbl_menu;#22
+select count(*) from tbl_category;#12
+# => 264
+select * from tbl_menu
+cross join
+    tbl_category;
+
+# self join
+# 하나의 테이블에서 한 행이 다른행을 참조하는 관계가 있는 경우
+# 같은 테이블끼리 조인하는것
+select * from tbl_category; # 12 행
+
+select * from (select a.category_code as '대분류 코드'
+                    , a.category_name as '대분류 명'
+                    , b.category_code as '소분류 코드'
+                    , b.category_name as '소분류명'
+               from tbl_category a
+                        join tbl_category b
+                             on a.category_code = b.ref_category_code) a
+where `대분류 명` = '식사'
+;
+#     and a.ref_category_code is null
+
+# multiple join
+# 3개 이상의 테이블을 조인하는것
+# join 순서가 매우 중요함
+# ex) a join b join c
+# -> (a+b) join c
+# -> (a+b+c)
+select * from tbl_order;
+select * from tbl_order_menu;
+select * from tbl_menu;
+
+select
+    *
+from
+    tbl_order o
+    join
+        tbl_order_menu om
+on o.order_code = om.order_code # o + om 합쳐진 relation 생성
+    join tbl_menu m
+on om.menu_code = m.menu_code
+;
+
+# employeedb 로 변경
+select * from employee; #dept code 23 (dept null 2개)
+select * from department; # dept id 9
+select * from location; # location id, local code 5
+
+select *
+from employee e
+    , department d
+    , location l
+where e.DEPT_CODE = d.DEPT_ID
+    and d.LOCATION_ID = l.LOCAL_CODE
+;
+
+select *
+from employee e
+    join department d
+on e.DEPT_CODE = d.DEPT_ID
+    join location l
+        on d.LOCATION_ID = l.LOCAL_CODE
+;
+
+
+
+
+
