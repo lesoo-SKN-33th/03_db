@@ -20,12 +20,14 @@ limit 3;
 -- Q2
 # 재직중인 대리  직원명, 직급명, 급여, 사원번호
 # , 이메일, 전번 입사일
+# 급여 기준 내림차순
 select e.emp_name
      , j.job_name
     , e.salary
     , e.emp_id
     , e.email
-    , e.phone, e.hire_date
+    , e.phone
+    , e.hire_date
 from employee e
     , job j
 where  j.job_code = e.job_code
